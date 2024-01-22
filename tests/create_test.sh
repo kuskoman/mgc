@@ -43,6 +43,5 @@ teardown() {
 @test "Display help with -h argument" {
     run bash $LIB_DIR/create.sh -h
     [ "$status" -eq 0 ]
-    # check if lines start with "Usage"
     [[ "${lines[0]}" =~ ^Usage ]]
 }
