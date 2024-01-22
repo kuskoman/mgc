@@ -2,7 +2,7 @@
 
 set -euo pipefail
 
-source "${BASH_SOURCE%/*}/../shared/utils.sh"
+source "${BASH_SOURCE%/*}/shared/utils.sh"
 
 display_help() {
     echo "Usage: $0 <profile_name>"
