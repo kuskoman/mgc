@@ -1,6 +1,6 @@
 #!/bin/bash
 
-set -euo pipefail
+set -e
 
 lib_dir="${BASH_SOURCE%/*}/../lib"
 source "$lib_dir/shared/utils.sh"
