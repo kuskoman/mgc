@@ -3,12 +3,12 @@
 source "${BASH_SOURCE%/*}/shared/utils.sh"
 
 display_help() {
-    echo "Usage: $0 <profile_name> <ssh_key_path> <email> <username>"
+    echo "Usage: $0 --name <profile_name> --key <ssh_key_path> --email <email> --username <username>"
     echo
     echo "Creates a new profile with the specified SSH key, email, and username."
     echo
     echo "Example:"
-    echo "  $0 myprofile /path/to/ssh_key myemail@example.com myusername"
+    echo "  $0 --name myprofile --key /path/to/ssh_key --email myemail@example.com --username myusername"
 }
 
 verify_ssh_key() {
@@ -52,21 +52,35 @@ create_profile() {
     echo "Profile '$profile_name' created successfully."
 }
 
-
-
 main() {
-    if [[ "$1" == "-h" || "$1" == "--help" ]]; then
-        display_help
-        exit 0
-    fi
+    local profile_name=""
+    local ssh_key=""
+    local email=""
+    local username=""
 
-    if [ "$#" -ne 4 ]; then
-        echo "Error: Invalid number of arguments. Expected 4, got $#" >&2
+    while getopts ":n:k:e:u:h" opt; do
+        case $opt in
+            n) profile_name=$OPTARG ;;
+            k) ssh_key=$OPTARG ;;
+            e) email=$OPTARG ;;
+            u) username=$OPTARG ;;
+            h) display_help
+               exit 0 ;;
+            \?) echo "Invalid option -$OPTARG" >&2
+                display_help >&2
+                exit 1 ;;
+            :) echo "Option -$OPTARG requires an argument." >&2
+               exit 1 ;;
+        esac
+    done
+
+    if [ -z "$profile_name" ] || [ -z "$ssh_key" ] || [ -z "$email" ] || [ -z "$username" ]; then
+        echo "Error: Missing arguments." >&2
         display_help >&2
         exit 1
     fi
 
-    create_profile "$1" "$2" "$3" "$4"
+    create_profile "$profile_name" "$ssh_key" "$email" "$username"
 }
 
 main "$@"
