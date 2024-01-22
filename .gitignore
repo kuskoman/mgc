@@ -1,0 +1,17 @@
+# Ignore backup files created by text editors
+*~
+
+# Ignore log files
+*.log
+
+# Ignore temporary files
+*.tmp
+*.temp
+
+# Ignore directories that might contain temporary or binary files
+tmp/
+temp/
+
+# Ignore compiled scripts or binary files, if applicable
+*.o
+*.out
