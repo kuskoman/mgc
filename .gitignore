@@ -11,6 +11,7 @@
 # Ignore directories that might contain temporary or binary files
 tmp/
 temp/
+tmp-test*/
 
 # Ignore compiled scripts or binary files, if applicable
 *.o
