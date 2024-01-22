@@ -1,6 +1,17 @@
 #!/bin/bash
 
+set -euo pipefail
+
 source "${BASH_SOURCE%/*}/shared/utils.sh"
+
+display_help() {
+    echo "Usage: $0"
+    echo
+    echo "Lists all available profiles."
+    echo
+    echo "Example:"
+    echo "  $0"
+}
 
 list_profiles() {
     local profile_dir="$HOME/.mgc/profiles"
@@ -19,6 +30,11 @@ list_profiles() {
 }
 
 main() {
+    if [[ "$1" == "-h" || "$1" == "--help" ]]; then
+        display_help
+        exit 0
+    fi
+
     list_profiles
 }
 

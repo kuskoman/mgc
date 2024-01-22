@@ -2,8 +2,13 @@
 
 source "${BASH_SOURCE%/*}/shared/utils.sh"
 
-__create_usage() {
+display_help() {
     echo "Usage: $0 <profile_name> <ssh_key_path> <email> <username>"
+    echo
+    echo "Creates a new profile with the specified SSH key, email, and username."
+    echo
+    echo "Example:"
+    echo "  $0 myprofile /path/to/ssh_key myemail@example.com myusername"
 }
 
 verify_ssh_key() {
@@ -50,14 +55,14 @@ create_profile() {
 
 
 main() {
-    if [ "$1" = "--help" ]; then
-        __create_usage
+    if [[ "$1" == "-h" || "$1" == "--help" ]]; then
+        display_help
         exit 0
     fi
 
     if [ "$#" -ne 4 ]; then
         echo "Error: Invalid number of arguments. Expected 4, got $#" >&2
-        __create_usage >&2
+        display_help >&2
         exit 1
     fi
 
