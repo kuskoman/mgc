@@ -3,7 +3,10 @@
 source "${BASH_SOURCE%/*}/shared/utils.sh"
 
 display_help() {
-    echo "Usage: $0 --name <profile_name> --key <ssh_key_path> --email <email> --username <username>"
+    echo "Usage: $0 [--name <profile_name> | -n <profile_name>]"
+    echo "          [--key <ssh_key_path> | -k <ssh_key_path>]"
+    echo "          [--email <email> | -e <email>]"
+    echo "          [--username <username> | -u <username>]"
     echo
     echo "Creates a new profile with the specified SSH key, email, and username."
     echo
@@ -35,7 +38,7 @@ create_profile() {
     local ssh_key=$2
     local email=$3
     local username=$4
-    local profile_dir="$(get_profile_dir "$profile_name")"
+    local profile_dir=$(get_profile_dir "$profile_name")
 
     if [ -d "$profile_dir" ]; then
         echo "Error: Profile '$profile_name' already exists." >&2
@@ -58,19 +61,34 @@ main() {
     local email=""
     local username=""
 
-    while getopts ":n:k:e:u:h" opt; do
-        case $opt in
-            n) profile_name=$OPTARG ;;
-            k) ssh_key=$OPTARG ;;
-            e) email=$OPTARG ;;
-            u) username=$OPTARG ;;
-            h) display_help
-               exit 0 ;;
-            \?) echo "Invalid option -$OPTARG" >&2
+    while [[ "$#" -gt 0 ]]; do
+        key="$1"
+        case $key in
+            -n|--name)
+                profile_name="$2"
+                shift 2
+                ;;
+            -k|--key)
+                ssh_key="$2"
+                shift 2
+                ;;
+            -e|--email)
+                email="$2"
+                shift 2
+                ;;
+            -u|--username)
+                username="$2"
+                shift 2
+                ;;
+            -h|--help)
+                display_help
+                exit 0
+                ;;
+            *)
+                echo "Unknown option: $1" >&2
                 display_help >&2
-                exit 1 ;;
-            :) echo "Option -$OPTARG requires an argument." >&2
-               exit 1 ;;
+                exit 1
+                ;;
         esac
     done
 

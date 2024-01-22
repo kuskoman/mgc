@@ -14,7 +14,7 @@ display_help() {
 }
 
 list_profiles() {
-    local profile_dir=get_profiles_base_dir
+    local profile_dir="$(get_mgc_base_dir)/profiles"
 
     if [ ! -d "$profile_dir" ] || [ -z "$(ls -A "$profile_dir")" ]; then
         echo "No profiles found."
