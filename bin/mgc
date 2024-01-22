@@ -1,6 +1,6 @@
 #!/bin/bash
 
-set -e
+set -euo pipefail
 
 lib_dir="${BASH_SOURCE%/*}/../lib"
 source "$lib_dir/shared/utils.sh"
@@ -14,14 +14,16 @@ Usage:
 
 Commands:
   create   Create a new profile with specific SSH key, email, and username.
-  switch   Switch to a specified profile.
+  switch   Switch to a specified profile (default to local scope).
+  clone    Clone a repository using a specific profile.
   list     List all available profiles.
   remove   Remove an existing profile.
   help     Display this help information.
 
 Examples:
   mgc create profileName --ssh-key ~/.ssh/id_rsa_profileName --email user@example.com --username username
-  mgc switch profileName
+  mgc switch profileName [--local | --global]
+  mgc clone git@example.com:repo.git profileName
   mgc list
   mgc remove profileName
 
@@ -29,24 +31,24 @@ For more information on a specific command, type 'mgc <command> --help'.
 EOF
 }
 
+handle_command_help() {
+    local command=$1
+    source "$lib_dir/$command.sh" --help
+}
+
 case "$1" in
-    create)
-        source "$lib_dir/create.sh" "${@:2}"
-        ;;
-    switch)
-        source "$lib_dir/switch.sh" "${@:2}"
-        ;;
-    list)
-        source "$lib_dir/list.sh" "${@:2}"
-        ;;
-    remove)
-        source "$lib_dir/remove.sh" "${@:2}"
+    create | switch | clone | list | remove)
+        if [[ "${2:-}" == "-h" || "${2:-}" == "--help" ]]; then
+            handle_command_help "$1"
+        else
+            source "$lib_dir/$1.sh" "${@:2}"
+        fi
         ;;
     help)
         display_help
         ;;
     *)
-        if [ ! -z "$1" ]; then
+        if [ -n "$1" ]; then
             echo "Unknown command: $1"
         fi
         display_help
