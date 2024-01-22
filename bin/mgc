@@ -1,6 +1,9 @@
 #!/bin/bash
 
-source "${BASH_SOURCE%/*}/shared/utils.sh"
+set -e
+
+lib_dir="${BASH_SOURCE%/*}/../lib"
+source "$lib_dir/shared/utils.sh"
 
 display_help() {
     cat << EOF
@@ -28,22 +31,24 @@ EOF
 
 case "$1" in
     create)
-        source "${BASH_SOURCE%/*}/lib/create.sh" "$@"
+        source "$lib_dir/create.sh" "${@:2}"
         ;;
     switch)
-        source "${BASH_SOURCE%/*}/lib/switch.sh" "$@"
+        source "$lib_dir/switch.sh" "${@:2}"
         ;;
     list)
-        source "${BASH_SOURCE%/*}/lib/list.sh" "$@"
+        source "$lib_dir/list.sh" "${@:2}"
         ;;
     remove)
-        source "${BASH_SOURCE%/*}/lib/remove.sh" "$@"
+        source "$lib_dir/remove.sh" "${@:2}"
         ;;
     help)
         display_help
         ;;
     *)
-        echo "Unknown command: $1"
+        if [ ! -z "$1" ]; then
+            echo "Unknown command: $1"
+        fi
         display_help
         exit 1
         ;;
