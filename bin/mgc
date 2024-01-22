@@ -1,0 +1,50 @@
+#!/bin/bash
+
+source "${BASH_SOURCE%/*}/shared/utils.sh"
+
+display_help() {
+    cat << EOF
+mgc: A tool to manage multiple SSH and Git configurations.
+
+Usage:
+  mgc <command> [arguments]
+
+Commands:
+  create   Create a new profile with specific SSH key, email, and username.
+  switch   Switch to a specified profile.
+  list     List all available profiles.
+  remove   Remove an existing profile.
+  help     Display this help information.
+
+Examples:
+  mgc create profileName --ssh-key ~/.ssh/id_rsa_profileName --email user@example.com --username username
+  mgc switch profileName
+  mgc list
+  mgc remove profileName
+
+For more information on a specific command, type 'mgc <command> --help'.
+EOF
+}
+
+case "$1" in
+    create)
+        source "${BASH_SOURCE%/*}/lib/create.sh" "$@"
+        ;;
+    switch)
+        source "${BASH_SOURCE%/*}/lib/switch.sh" "$@"
+        ;;
+    list)
+        source "${BASH_SOURCE%/*}/lib/list.sh" "$@"
+        ;;
+    remove)
+        source "${BASH_SOURCE%/*}/lib/remove.sh" "$@"
+        ;;
+    help)
+        display_help
+        ;;
+    *)
+        echo "Unknown command: $1"
+        display_help
+        exit 1
+        ;;
+esac
