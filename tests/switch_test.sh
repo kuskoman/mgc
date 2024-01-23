@@ -54,17 +54,14 @@ create_test_profile() {
 }
 
 @test "Abort local switch in non-git directory" {
-    run bash "$LIB_DIR/switch.sh" testProfile --local
+    cd "$TEST_MGC_BASE_DIR" || return 1
+    run bash -c "echo 'n' | $LIB_DIR/switch.sh testProfile"
     [ "$status" -eq 1 ]
     [[ "$output" == *"Local switch aborted."* ]]
 }
 
-simulate_yes_confirmation() {
-    echo "y" | bash "$LIB_DIR/switch.sh" testProfile
-}
-
 @test "Confirm global switch in non-git directory" {
-    simulate_yes_confirmation
+    echo "y" | bash "$LIB_DIR/switch.sh" testProfile
     [ "$(git config --global user.email)" = "test@example.com" ]
     [ "$(git config --global user.name)" = "testuser" ]
     [ "$(git config --global core.sshCommand)" = "ssh -i /path/to/test/id_rsa" ]
