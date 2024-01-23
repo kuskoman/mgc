@@ -16,7 +16,8 @@ display_help() {
 
 remove_profile() {
     local profile_name=$1
-    local profile_dir="$(get_profile_dir "$profile_name")"
+    local profile_dir
+    profile_dir="$(get_profile_dir "$profile_name")"
 
     if [ ! -d "$profile_dir" ]; then
         echo "Error: Profile '$profile_name' does not exist." >&2

@@ -26,7 +26,7 @@ create_test_profile() {
 simulate_remove_profile() {
     local profile_name=$1
     local confirmation=$2
-    echo $confirmation | bash "$LIB_DIR/remove.sh" "$profile_name"
+    echo "$confirmation" | bash "$LIB_DIR/remove.sh" "$profile_name"
 }
 
 @test "Remove existing profile" {

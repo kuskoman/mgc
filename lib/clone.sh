@@ -20,20 +20,25 @@ clone_repo() {
     local repo_url=$1
     local profile_name=$2
     local clone_location=${3:-}
-    local profile_dir="$(get_profile_dir "$profile_name")"
+    local profile_dir
+    profile_dir="$(get_profile_dir "$profile_name")"
 
     if [ ! -d "$profile_dir" ]; then
         echo "Error: Profile '$profile_name' does not exist." >&2
         return 1
     fi
 
-    local ssh_key=$(cat "$profile_dir/ssh_key")
-    local email=$(cat "$profile_dir/email")
-    local username=$(cat "$profile_dir/username")
+    local ssh_key
+    local email
+    local username
+    ssh_key=$(cat "$profile_dir/ssh_key")
+    email=$(cat "$profile_dir/email")
+    username=$(cat "$profile_dir/username")
 
     if [ -z "$clone_location" ]; then
         GIT_SSH_COMMAND="ssh -i $ssh_key" git clone "$repo_url"
-        local repo_name=$(basename "$repo_url" .git)
+        local repo_name
+        repo_name=$(basename "$repo_url" .git)
         cd "$repo_name" || return
     else
         GIT_SSH_COMMAND="ssh -i $ssh_key" git clone "$repo_url" "$clone_location"

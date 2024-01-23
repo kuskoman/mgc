@@ -18,7 +18,8 @@ display_help() {
 
 switch_profile() {
     local profile_name=$1
-    local profile_dir="$(get_profile_dir "$profile_name")"
+    local profile_dir
+    profile_dir="$(get_profile_dir "$profile_name")"
 
     local scope=${2:-local}
     scope=${scope#--}
@@ -28,9 +29,13 @@ switch_profile() {
         return 1
     fi
 
-    local ssh_key=$(cat "$profile_dir/ssh_key")
-    local email=$(cat "$profile_dir/email")
-    local username=$(cat "$profile_dir/username")
+    local ssh_key
+    local email
+    local username
+
+    ssh_key=$(cat "$profile_dir/ssh_key")
+    email=$(cat "$profile_dir/email")
+    username=$(cat "$profile_dir/username")
 
     if [ "$scope" == "local" ]; then
         if git rev-parse --is-inside-work-tree > /dev/null 2>&1; then

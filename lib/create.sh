@@ -38,7 +38,8 @@ create_profile() {
     local ssh_key=$2
     local email=$3
     local username=$4
-    local profile_dir=$(get_profile_dir "$profile_name")
+    local profile_dir
+    profile_dir=$(get_profile_dir "$profile_name")
 
     if [ -d "$profile_dir" ]; then
         echo "Error: Profile '$profile_name' already exists." >&2
