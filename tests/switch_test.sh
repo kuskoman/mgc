@@ -24,10 +24,16 @@ teardown() {
 }
 
 backup_git_config() {
+    if [ ! -f "$HOME/.gitconfig" ]; then
+        return
+    fi
     cp "$HOME/.gitconfig" "$HOME/.gitconfig.bak"
 }
 
 restore_git_config() {
+    if [ ! -f "$HOME/.gitconfig.bak" ]; then
+        return
+    fi
     cp "$HOME/.gitconfig.bak" "$HOME/.gitconfig"
     rm "$HOME/.gitconfig.bak"
 }
