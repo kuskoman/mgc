@@ -18,8 +18,10 @@ display_help() {
 
 switch_profile() {
     local profile_name=$1
-    local scope=${2:-local}
     local profile_dir="$(get_profile_dir "$profile_name")"
+
+    local scope=${2:-local}
+    scope=${scope#--}
 
     if [ ! -d "$profile_dir" ]; then
         echo "Error: Profile '$profile_name' does not exist." >&2
