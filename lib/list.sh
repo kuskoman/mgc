@@ -1,6 +1,6 @@
 #!/bin/bash
 
-set -euo pipefail
+set -eo pipefail
 
 source "${BASH_SOURCE%/*}/shared/utils.sh"
 
