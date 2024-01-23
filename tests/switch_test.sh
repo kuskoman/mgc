@@ -6,6 +6,8 @@ PROFILE_DIR="$TEST_MGC_BASE_DIR/.mgc/profiles"
 FAKE_REPO_DIR="$TEST_MGC_BASE_DIR/fake-repo"
 
 setup() {
+    backup_git_config
+
     MGC_DIR="$TEST_MGC_BASE_DIR/.mgc"
     export MGC_DIR
 
@@ -18,6 +20,16 @@ setup() {
 
 teardown() {
     rm -rf "$TEST_MGC_BASE_DIR"
+    restore_git_config
+}
+
+backup_git_config() {
+    cp "$HOME/.gitconfig" "$HOME/.gitconfig.bak"
+}
+
+restore_git_config() {
+    cp "$HOME/.gitconfig.bak" "$HOME/.gitconfig"
+    rm "$HOME/.gitconfig.bak"
 }
 
 create_test_profile() {
