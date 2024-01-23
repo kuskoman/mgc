@@ -1,7 +1,7 @@
 #!/usr/bin/env bats
 
 LIB_DIR="$(pwd)/../lib"
-TEST_MGC_BASE_DIR="$(pwd)/tmp-test-switch"
+TEST_MGC_BASE_DIR="$(mktemp -d)/tmp-test-switch"
 PROFILE_DIR="$TEST_MGC_BASE_DIR/.mgc/profiles"
 FAKE_REPO_DIR="$TEST_MGC_BASE_DIR/fake-repo"
 
