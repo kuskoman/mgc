@@ -37,7 +37,7 @@ handle_command_help() {
 }
 
 case "$1" in
-    create | switch | clone | list | remove | show)
+    create | create_interactive | switch | clone | list | remove | show)
         if [[ "${2:-}" == "-h" || "${2:-}" == "--help" ]]; then
             handle_command_help "$1"
         else
